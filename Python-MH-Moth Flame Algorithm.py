@@ -85,4 +85,4 @@ def target_function (variables_values = [0, 0]):
     func_value = 4*variables_values[0]**2 - 2.1*variables_values[0]**4 + (1/3)*variables_values[0]**6 + variables_values[0]*variables_values[1] - 4*variables_values[1]**2 + 4*variables_values[1]**4
     return func_value
 
-mfa = moth_flame_algorithm(swarm_size = 20, min_values = [-5,-5], max_values = [5,5], generations = 1000, b_constant = 1)
+mfa = moth_flame_algorithm(swarm_size = 20, min_values = [-5,-5], max_values = [5,5], generations = 250, b_constant = 1)
