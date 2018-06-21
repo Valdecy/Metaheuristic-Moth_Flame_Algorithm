@@ -27,11 +27,13 @@ def initial_moths(swarm_size = 3, min_values = [-5,-5], max_values = [5,5]):
              position.iloc[i,j] = random.uniform(min_values[j], max_values[j])
         position.iloc[i,-1] = target_function(position.iloc[i,0:position.shape[1]-1])
     return position
+
 # Function: Update Flames
 def update_flames(flames, position):
     population = pd.concat([flames, position])
     flames = population.nsmallest(flames.shape[0], "Fitness").copy(deep = True)
     return flames
+
 # Function: Update Position
 def update_position(position, flames, flame_number = 1, b_constant = 1, a_linear_component = 1, min_values = [-5,-5], max_values = [5,5]):
     for i in range (0, position.shape[0]):
@@ -63,7 +65,8 @@ def moth_flame_algorithm(swarm_size = 3, min_values = [-5,-5], max_values = [5,5
     best_moth = flames.iloc[0,:].copy(deep = True)
     
     while (count <= generations):
-        print("Generation: ", count, " of ", generations, " f(x) = ", best_moth[-1]) 
+        print("Generation: ", count, " of ", generations, " f(x) = ", best_moth[-1])
+        
         flame_number = round(position.shape[0] - count*((position.shape[0] - 1)/generations))
         a_linear_component = -1 + count*((-1)/generations)
         position = update_position(position, flames, flame_number = flame_number, b_constant = b_constant, a_linear_component = a_linear_component, min_values = min_values, max_values = max_values)
@@ -71,6 +74,7 @@ def moth_flame_algorithm(swarm_size = 3, min_values = [-5,-5], max_values = [5,5
         count = count + 1
         if (flames.iloc[0,:][-1] < best_moth[-1]):
             best_moth = flames.iloc[0,:].copy(deep = True)
+            
     print(best_moth)
     return best_moth
 
@@ -81,14 +85,4 @@ def target_function (variables_values = [0, 0]):
     func_value = 4*variables_values[0]**2 - 2.1*variables_values[0]**4 + (1/3)*variables_values[0]**6 + variables_values[0]*variables_values[1] - 4*variables_values[1]**2 + 4*variables_values[1]**4
     return func_value
 
-mfa = moth_flame_algorithm(swarm_size = 20, min_values = [-5,-5], max_values = [5,5], generations = 100, b_constant = 1)
-
-# Function to be Minimized (Rosenbrocks Valley). Solution ->  f(x) = 0; xi = 1
-def target_function(variables_values = [0, 0]):
-    func_value = 0
-    last_x = variables_values[0]
-    for i in range(1, len(variables_values)):
-        func_value = func_value + (100 * math.pow((variables_values[i] - math.pow(last_x, 2)), 2)) + math.pow(1 - last_x, 2)
-    return func_value
-
-mfa = moth_flame_algorithm(swarm_size = 30, min_values = [-5,-5,-5,-5], max_values = [5,5,5,5], generations = 5000, b_constant = 1)
+mfa = moth_flame_algorithm(swarm_size = 20, min_values = [-5,-5], max_values = [5,5], generations = 1000, b_constant = 1)
