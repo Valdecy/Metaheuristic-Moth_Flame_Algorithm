@@ -42,13 +42,11 @@ def update_position(position, flames, flame_number = 1, b_constant = 1, a_linear
         for j in range(0, len(min_values)):
             if (i <= flame_number):
                 flame_distance = abs(flames[i,j] - position[i,j])
-                b_constant     = b_constant
                 rnd_1          = int.from_bytes(os.urandom(8), byteorder = "big") / ((1 << 64) - 1)
                 rnd_2          = (a_linear_component - 1)*rnd_1 + 1 
                 position[i,j]  = flame_distance*math.exp(b_constant *rnd_2)*math.cos(rnd_2*2*math.pi) + flames[i,j]    
             elif(i > flame_number):
                 flame_distance = abs(flames[i,j] - position[i,j])
-                b_constant     = b_constant
                 rnd_1          = int.from_bytes(os.urandom(8), byteorder = "big") / ((1 << 64) - 1)
                 rnd_2          = (a_linear_component - 1)*rnd_1 + 1 
                 position[i,j]  = np.clip((flame_distance*math.exp(b_constant *rnd_2)*math.cos(rnd_2*2*math.pi) + flames[flame_number,j]), min_values[j],  max_values[j])
